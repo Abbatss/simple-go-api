@@ -9,6 +9,7 @@ require (
 	github.com/jackc/pgx/v4 v4.11.0
 	github.com/stretchr/testify v1.7.0
 	github.com/voi-oss/svc v0.7.3
+	go.opencensus.io v0.22.2
 	go.uber.org/zap v1.17.0
 	gopkg.in/go-playground/validator.v9 v9.31.0 // indirect
 )

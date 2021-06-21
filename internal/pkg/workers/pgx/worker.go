@@ -41,3 +41,6 @@ func Connect(connString string) (*Worker, error) {
 	}
 	return &Worker{pool: conn}, nil
 }
+func (w *Worker) Pool() *pgxpool.Pool {
+	return w.pool
+}
