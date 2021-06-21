@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Abbatss/TestGo/internal/pkg/order/order_errors"
 	"github.com/Abbatss/TestGo/internal/pkg/order/store"
 	"github.com/google/uuid"
 	"strings"
@@ -34,6 +35,9 @@ func (g *Gateway) GetOrder(ctx context.Context, entityID string) (*store.Order, 
 	defer cancel()
 
 	order, err := g.storage.Get(cCtx, entityID)
+	if errors.Is(err, order_errors.ErrOrderNotFound) {
+		return nil, err
+	}
 	if err != nil {
 		return nil, fmt.Errorf("can't get order from db for orderID:%s, error:%w", entityID, err)
 	}

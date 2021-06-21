@@ -12,11 +12,6 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-const (
-	zoneName = "stockholm"
-	roleType = "MDS"
-)
-
 type orderGatewayMock struct {
 	GetOrderFunc func(ctx context.Context, entityID string) (*store.Order, error)
 }

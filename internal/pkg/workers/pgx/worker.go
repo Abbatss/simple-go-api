@@ -14,15 +14,15 @@ type Worker struct {
 	pool *pgxpool.Pool
 }
 
-func (w Worker) Init(logger *zap.Logger) error {
+func (w *Worker) Init(logger *zap.Logger) error {
 	return nil
 }
 
-func (w Worker) Run() error {
+func (w *Worker) Run() error {
 	return nil
 }
 
-func (w Worker) Terminate() error {
+func (w *Worker) Terminate() error {
 	w.pool.Close()
 	return nil
 }

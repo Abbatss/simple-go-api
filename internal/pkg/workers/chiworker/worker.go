@@ -37,14 +37,14 @@ type Worker struct {
 func New(c Controller) *Worker {
 	w := &Worker{
 		name:   "chi-http",
-		prefix: "",
+		prefix: "/",
 		port:   DefaultHTTPPort,
 		ctrl:   c,
 	}
 	return w
 }
 
-func (w Worker) Init(logger *zap.Logger) error {
+func (w *Worker) Init(logger *zap.Logger) error {
 	w.logger = logger
 	w.router = chi.NewRouter()
 	httpLogger, err := zap.NewStdLogAt(w.logger, zapcore.ErrorLevel)
@@ -80,13 +80,13 @@ func (w *Worker) Name() string {
 	return w.name
 }
 
-func (w Worker) Run() error {
+func (w *Worker) Run() error {
 	if err := w.server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		return err
 	}
 	return nil
 }
 
-func (w Worker) Terminate() error {
+func (w *Worker) Terminate() error {
 	return w.ctrl.Terminate()
 }

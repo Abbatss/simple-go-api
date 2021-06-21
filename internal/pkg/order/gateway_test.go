@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Abbatss/TestGo/internal/pkg/order/order_errors"
 	"github.com/Abbatss/TestGo/internal/pkg/order/store"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -43,6 +44,15 @@ func TestGateway_GetOrder(t *testing.T) {
 		{
 			name:    "empty orderID should return error",
 			wantErr: errors.New("orderID is nil or empty"),
+		},
+		{
+			name: "should return ErrOrderNotFound if storage return ErrOrderNotFound",
+			store: &storageMock{GetFunc: func(ctx context.Context, orderID string) (*store.Order, error) {
+				return nil, order_errors.ErrOrderNotFound
+			}},
+			orderID: orderID,
+
+			wantErr: order_errors.ErrOrderNotFound,
 		},
 		{
 			name: "should return error if storage return error",
