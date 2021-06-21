@@ -1,10 +1,8 @@
 package main
 
 import (
-	"context"
 	"fmt"
-	"github.com/jackc/pgx/v4/log/zapadapter"
-	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/Abbatss/TestGo/internal/pkg/workers/pgx"
 	"go.uber.org/zap"
 	"time"
 
@@ -45,17 +43,11 @@ func main() {
 	// SVC supervisor Init
 	service, err := svc.New(serviceName, serviceVersion, options...)
 	svc.MustInit(service, err)
+
+	pg,err := pgx.Connect("host=localhost port=5432 dbname=test user=user password=password")
+	svc.MustInit(service, err)
+
+	service.AddWorker("postgres",pg)
 	service.Run()
 
-}
-
-func setupPostgres(service *svc.SVC) *pgxpool.Pool {
-	config, err := pgxpool.ParseConfig("host=localhost port=5432 dbname=test user=user password=password")
-	svc.MustInit(service, err)
-	config.ConnConfig.Logger = zapadapter.NewLogger(zap.NewNop())
-
-	conn, err := pgxpool.ConnectConfig(context.Background(), config)
-	svc.MustInit(service, err)
-
-	return conn
 }
